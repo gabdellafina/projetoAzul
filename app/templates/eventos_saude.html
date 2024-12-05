@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <h1 class="text-center mt-4">Eventos de Saúde</h1>
+
+    {% if erro %}
+        <div class="alert alert-danger">{{ erro }}</div>
+    {% endif %}
+
+    {% if eventos %}
+        <div class="row">
+            {% for evento in eventos %}
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ evento.titulo }}</h5>
+                            <p class="card-text">{{ evento.descricao }}</p>
+                            <p><strong>Data:</strong> {{ evento.data_evento|date:"d/m/Y" }}</p>
+                            <p><strong>Local:</strong> {{ evento.local }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-center">Nenhum evento futuro encontrado.</p>
+    {% endif %}
+</div>
+{% endblock %}

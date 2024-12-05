@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <h1 class="text-center mt-4">Carteira de Vacinação</h1>
+
+    <!-- Formulário para buscar vacinas -->
+    <form method="get" class="mb-4">
+        <div class="form-group">
+            <label for="cpf">CPF do Paciente</label>
+            <input type="text" name="cpf" id="cpf" class="form-control" placeholder="Digite o CPF">
+        </div>
+        <button type="submit" class="btn btn-primary">Buscar Vacinas</button>
+    </form>
+
+    <!-- Mensagens de erro ou sucesso -->
+    {% if erro %}
+        <div class="alert alert-danger">{{ erro }}</div>
+    {% elif sucesso %}
+        <div class="alert alert-success">{{ sucesso }}</div>
+    {% endif %}
+
+    <!-- Lista de vacinas -->
+    {% if vacinas %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Vacina</th>
+                    <th>Data Prevista</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for vacina in vacinas %}
+                    <tr>
+                        <td>{{ vacina.vacina }}</td>
+                        <td>{{ vacina.data_prevista|date:"d-m-Y" }}</td>
+                        <td>{{ vacina.status }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p class="text-center">Nenhuma vacina encontrada.</p>
+    {% endif %}
+
+    <!-- Formulário para adicionar nova vacina -->
+    <h3 class="mt-5">Adicionar Vacina</h3>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="cpf">CPF do Paciente</label>
+            <input type="text" name="cpf" id="cpf" class="form-control" placeholder="Digite o CPF">
+        </div>
+        <div class="form-group">
+            <label for="vacina">Nome da Vacina</label>
+            <input type="text" name="vacina" id="vacina" class="form-control" placeholder="Digite o nome da vacina">
+        </div>
+        <div class="form-group">
+            <label for="data_prevista">Data Prevista</label>
+            <input type="date" name="data_prevista" id="data_prevista" class="form-control">
+        </div>
+        <button type="submit" class="btn btn-success">Adicionar Vacina</button>
+    </form>
+</div>
+{% endblock %}

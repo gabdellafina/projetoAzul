@@ -17,13 +17,13 @@ def perfil(request):
             email = request.POST.get('email')
             senha = request.POST.get('senha')
 
-            client = MongoClient("mongodb+srv://<user>:<password>@cluster0.mongodb.net/")
+            client = MongoClient("mongodb+srv://guilhermeaqw24:QecII8Ow51jOOePs@cluster0.zile7.mongodb.net/?retryWrites=true&w=majority")
             db = client['SusBd']
             collection = db['Usuarios']
             usuario = collection.find_one({"email": email, "senha": senha})
             
             if usuario:
-                redirect('index')
+                return redirect('index')
             else:
                 return HttpResponse("Credenciais inválidas!")
 
@@ -183,4 +183,68 @@ def consultar_calendario(request):
             messages.error(request, f"Erro ao consultar o calendário: {e}")
 
     return render(request, "consultar_calendario.html", {"eventos": eventos})
+
+def carteira_vacinacao(request):
+    if request.method == "GET":
+        cpf = request.GET.get("cpf")  # Buscar o CPF do paciente para listar vacinas
+        vacinas = []
+
+        if cpf:
+            try:
+                # Conexão com o MongoDB
+                client = MongoClient("mongodb+srv://guilhermeaqw24:QecII8Ow51jOOePs@cluster0.zile7.mongodb.net/?retryWrites=true&w=majority")
+                db = client['SusBd']
+                collection = db['CarteiraVacinas']
+
+                # Recuperar vacinas do paciente
+                vacinas = list(collection.find({"paciente_id": cpf}))
+            except Exception as e:
+                return render(request, "carteira_vacinacao.html", {"erro": f"Erro ao buscar vacinas: {e}"})
+
+        return render(request, "carteira_vacinacao.html", {"vacinas": vacinas})
+
+    elif request.method == "POST":
+        # Para registrar nova vacina
+        cpf = request.POST.get("cpf")
+        vacina = request.POST.get("vacina")
+        data_prevista = request.POST.get("data_prevista")
+
+        if not cpf or not vacina or not data_prevista:
+            return render(request, "carteira_vacinacao.html", {"erro": "Todos os campos são obrigatórios."})
+
+        try:
+            client = MongoClient("mongodb+srv://guilhermeaqw24:QecII8Ow51jOOePs@cluster0.zile7.mongodb.net/?retryWrites=true&w=majority")
+            db = client['SusBd']
+            collection = db['CarteiraVacinas']
+
+            vacina_data = {
+                "paciente_id": cpf,
+                "vacina": vacina,
+                "data_prevista": data_prevista,
+                "status": "pendente",
+                "criado_em": datetime.now()
+            }
+
+            collection.insert_one(vacina_data)
+            return render(request, "carteira_vacinacao.html", {"sucesso": "Vacina registrada com sucesso!"})
+        except Exception as e:
+            return render(request, "carteira_vacinacao.html", {"erro": f"Erro ao registrar vacina: {e}"})
+
+
+def eventos_saude(request):
+    eventos = []
+
+    try:
+        # Conexão com o MongoDB
+        client = MongoClient("mongodb+srv://guilhermeaqw24:QecII8Ow51jOOePs@cluster0.zile7.mongodb.net/?retryWrites=true&w=majority")
+        db = client['SusBd']
+        collection = db['EventosSaude']
+
+        # Buscar eventos futuros
+        data_atual = datetime.now()
+        eventos = list(collection.find({"data_evento": {"$gte": data_atual}}).sort("data_evento", 1))
+    except Exception as e:
+        return render(request, "eventos_saude.html", {"erro": f"Erro ao buscar eventos: {e}"})
+
+    return render(request, "eventos_saude.html", {"eventos": eventos})
 

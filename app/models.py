@@ -81,3 +81,85 @@ class Exame:
         }
         collection.insert_one(exame_data)
         print("Exame cadastrado com sucesso!")
+
+class CarteiraVacina:
+    def __init__(self, paciente_id, vacina, data_prevista, status="pendente"):
+        self.paciente_id = paciente_id
+        self.vacina = vacina
+        self.data_prevista = data_prevista
+        self.status = status
+        self.criado_em = datetime.now().strftime('%d-%m-%Y %H:%M')
+
+    def salvar(self):
+        client = MongoClient("mongodb+srv://guilhermeaqw24:QecII8Ow51jOOePs@cluster0.zile7.mongodb.net/?retryWrites=true&w=majority")
+        db = client['SusBd']
+        collection = db['CarteiraVacinas']
+        vacina_data = {
+            "paciente_id": self.paciente_id,
+            "vacina": self.vacina,
+            "data_prevista": self.data_prevista,
+            "status": self.status,
+            "criado_em": self.criado_em
+        }
+        collection.insert_one(vacina_data)
+        print("Vacina registrada com sucesso!")
+
+class EventoSaude:
+    def __init__(self, titulo, descricao, data_evento, local):
+        self.titulo = titulo
+        self.descricao = descricao
+        self.data_evento = data_evento
+        self.local = local
+        self.criado_em = datetime.now().strftime('%d-%m-%Y %H:%M')
+
+    def salvar(self):
+        client = MongoClient("mongodb+srv://guilhermeaqw24:QecII8Ow51jOOePs@cluster0.zile7.mongodb.net/?retryWrites=true&w=majority")
+        db = client['SusBd']
+        collection = db['EventosSaude']
+        evento_data = {
+            "titulo": self.titulo,
+            "descricao": self.descricao,
+            "data_evento": self.data_evento,
+            "local": self.local,
+            "criado_em": self.criado_em
+        }
+        collection.insert_one(evento_data)
+        print("Evento de saúde registrado com sucesso!")
+
+class EventoSaude:
+    def __init__(self, titulo, descricao, data_evento, local):
+        self.titulo = titulo
+        self.descricao = descricao
+        self.data_evento = data_evento
+        self.local = local
+        self.criado_em = datetime.now().strftime('%d-%m-%Y %H:%M')
+
+    def salvar(self):
+        client = MongoClient("mongodb+srv://guilhermeaqw24:QecII8Ow51jOOePs@cluster0.zile7.mongodb.net/?retryWrites=true&w=majority")
+        db = client['SusBd']
+        collection = db['EventosSaude']
+        evento_data = {
+            "titulo": self.titulo,
+            "descricao": self.descricao,
+            "data_evento": self.data_evento,
+            "local": self.local,
+            "criado_em": self.criado_em
+        }
+        collection.insert_one(evento_data)
+        print(f"Evento '{self.titulo}' registrado com sucesso!")
+
+evento1 = EventoSaude(
+    titulo="Campanha de Vacinação Contra a Gripe",
+    descricao="Vacinação gratuita para todas as idades. Compareça ao posto de saúde mais próximo.",
+    data_evento=datetime(2024, 12, 10, 9, 0),  # Data e hora do evento
+    local="Posto de Saúde Central"
+)
+evento1.salvar()
+
+evento2 = EventoSaude(
+    titulo="Feira de Saúde e Bem-Estar",
+    descricao="Atendimento médico gratuito, palestras e distribuição de brindes.",
+    data_evento=datetime(2024, 12, 15, 8, 30),
+    local="Praça da Liberdade"
+)
+evento2.salvar()
