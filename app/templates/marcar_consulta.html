@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">Marcar Consulta</h2>
+    <div class="card mx-auto" style="max-width: 600px;">
+        <div class="card-body">
+            <form method="POST" action="{% url 'marcar_consulta' %}">
+                {% csrf_token %}
+
+                <!-- CPF Input -->
+                <div class="mb-3">
+                    <label for="cpf" class="form-label">CPF</label>
+                    <input type="text" class="form-control" id="cpf" name="cpf" placeholder="Digite seu CPF" required>
+                </div>
+
+                <!-- Select Especialidade -->
+                <div class="mb-3">
+                    <label for="especialidade" class="form-label">Especialidade</label>
+                    <select class="form-select" id="especialidade" name="especialidade" required>
+                        <option value="" disabled selected>Selecione a especialidade</option>
+                        <option value="clinico_geral">Clínico Geral</option>
+                        <option value="cardiologia">Cardiologia</option>
+                        <option value="pediatria">Pediatria</option>
+                        <option value="dermatologia">Dermatologia</option>
+                        <option value="ginecologia">Ginecologia</option>
+                    </select>
+                </div>
+
+                <!-- Date Picker -->
+                <div class="mb-3">
+                    <label for="data" class="form-label">Data da Consulta</label>
+                    <input type="date" class="form-control" id="data" name="data" required>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn btn-primary w-100">Marcar Consulta</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

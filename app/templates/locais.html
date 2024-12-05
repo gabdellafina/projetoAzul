@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load icons %}
+{% block content %}
+    <div class="container text-center justify-content-center mt-4">
+        <h1>Mapa de Saúde</h1>
+    </div>
+
+    <!-- Legenda -->
+    <div class="container text-center justify-content-center my-4">
+        <div class="d-flex justify-content-center align-items-center flex-wrap">
+            <div class="p-2 mx-2">
+                <span class="badge bg-primary p-3">Azul</span>
+                <strong>USAFA (Unidade de Saúde da Família)</strong>
+            </div>
+            <div class="p-2 mx-2">
+                <span class="badge bg-danger p-3">Vermelho</span>
+                <strong>Hospital</strong>
+            </div>
+            <div class="p-2 mx-2">
+                <span class="badge bg-success p-3">Verde</span>
+                <strong>UPAs</strong>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mapa -->
+    <div class="container text-center justify-content-center">
+        <div id="map" style="height: 70vh; width: 80%; margin: auto;">{{ locais|safe }}</div>
+    </div>
+{% endblock %}

@@ -1,0 +1,20 @@
+.menu-item a {
+    font-size: 1.25rem; /* Aumenta o tamanho da fonte */
+    text-decoration: none;
+    color: #000;
+}
+.menu-item a:hover {
+    color: #007bff;
+}
+/* Altura do carrossel */
+.carousel-item {
+    height: 250px; /* Define uma altura maior */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+/* Centralização do link "Acessar todos os eventos" */
+.events-link {
+    text-align: center;
+    margin-top: 20px;
+}

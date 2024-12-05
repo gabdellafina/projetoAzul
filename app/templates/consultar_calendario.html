@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">Calendário de Exames e Consultas</h2>
+
+    <form method="POST" class="mt-4">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="cpf" class="form-label">CPF do Paciente</label>
+            <input type="text" class="form-control" id="cpf" name="cpf" placeholder="Digite o CPF">
+        </div>
+        <button type="submit" class="btn btn-primary">Consultar</button>
+    </form>
+
+    <hr>
+
+    {% if eventos %}
+        <h4 class="mt-4">Eventos Futuros</h4>
+        <ul class="list-group mt-3">
+            {% for evento in eventos %}
+            <li class="list-group-item">
+                <strong>{{ evento.tipo }}</strong> - {{ evento.data }} <br>
+                {{ evento.descricao }}
+            </li>
+            {% endfor %}
+        </ul>
+    {% elif not eventos and request.method == "POST" %}
+        <p class="text-warning">Nenhum evento encontrado para o CPF informado.</p>
+    {% endif %}
+</div>
+{% endblock %}

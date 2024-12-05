@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">Consultar Resultados de Exames</h2>
+    
+    <form method="POST" class="mt-4">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="cpf" class="form-label">CPF do Paciente</label>
+            <input type="text" class="form-control" id="cpf" name="cpf" placeholder="Digite o CPF">
+        </div>
+        <button type="submit" class="btn btn-primary">Consultar</button>
+    </form>
+
+    <hr>
+
+    {% if exames %}
+        <h4 class="mt-4">Resultados de Exames</h4>
+        <table class="table table-bordered mt-3">
+            <thead>
+                <tr>
+                    <th>Tipo</th>
+                    <th>Resultado</th>
+                    <th>Médico Responsável</th>
+                    <th>Data de Realização</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for exame in exames %}
+                <tr>
+                    <td>{{ exame.tipo }}</td>
+                    <td>{{ exame.resultado }}</td>
+                    <td>{{ exame.medico_id }}</td>
+                    <td>{{ exame.data_realizacao }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% elif not exames and request.method == "POST" %}
+        <p class="text-warning">Nenhum exame encontrado para o CPF informado.</p>
+    {% endif %}
+</div>
+{% endblock %}
